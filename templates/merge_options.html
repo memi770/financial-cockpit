@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-4">
+  <div class="card shadow p-4 mx-auto" style="max-width: 600px;">
+    <h4 class="text-center mb-3">איחוד חשבונות</h4>
+
+    <p class="text-muted text-center">
+      אתה עומד לאחד את החשבון שלך עם <strong>{{ partner.partner_username }}</strong>.
+      בחר כיצד תרצה לבצע את האיחוד והאם לשמור נתונים קיימים.
+    </p>
+
+    <form method="post">
+      <div class="mb-3">
+        <label class="form-label fw-bold">בחר אפשרות איחוד:</label>
+        <select name="choice" class="form-select" required>
+          <option value="merge_both">🔗 איחוד מלא – לשמור נתונים של שני המשתמשים</option>
+          <option value="keep_current">👤 לשמור רק את הנתונים שלי</option>
+          <option value="keep_partner">👥 לשמור רק את הנתונים של {{ partner.partner_username }}</option>
+          <option value="new_empty">🧾 לפתוח חשבון חדש ריק</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label fw-bold">לשמור נתונים החל מחודש:</label>
+        <input type="month" name="from_month" class="form-control">
+        <small class="text-muted">השאר ריק כדי לכלול את כל החודשים.</small>
+      </div>
+
+      <div class="text-center">
+        <button type="submit" class="btn btn-success">בצע איחוד</button>
+        <a href="/profile" class="btn btn-secondary">ביטול</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

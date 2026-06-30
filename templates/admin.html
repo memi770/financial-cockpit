@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3 class="text-center mb-4">לוח ניהול</h3>
+
+<div class="row text-center mb-4">
+  <div class="col-md-6">
+    <div class="card bg-light shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">סה״כ חשבונות</h5>
+        <h2 class="text-primary">{{ total_accounts }}</h2>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card bg-light shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">סה״כ כניסות למערכת</h5>
+        <h2 class="text-success">{{ total_logins }}</h2>
+      </div>
+    </div>
+  </div>
+</div>
+
+<table class="table table-striped table-bordered align-middle text-center shadow-sm">
+  <thead class="table-dark">
+    <tr>
+      <th>שם חשבון</th>
+      <th>משתמשים</th>
+      <th>אימיילים</th>
+      <th>סוג חשבון</th>
+      <th>סה״כ כניסות</th>
+      <th>כניסה אחרונה</th>
+      <th>נוצר בתאריך</th>
+      <th>פעולות</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for acc in accounts %}
+    <tr>
+      <td>
+        <strong>{{ acc.account_name }}</strong>
+        {% if acc.has_admin %}
+          <span class="badge bg-danger ms-1">מנהל</span>
+        {% endif %}
+      </td>
+      <td>{{ acc.usernames | safe }}</td>
+      <td>{{ acc.emails | safe }}</td>
+      <td>
+        {% if acc.is_shared %}
+          <span class="badge bg-info text-dark">משותף ({{ acc.member_count }})</span>
+        {% else %}
+          <span class="badge bg-secondary">אישי</span>
+        {% endif %}
+      </td>
+      <td>{{ acc.total_logins or 0 }}</td>
+      <td>{{ acc.last_login or '—' }}</td>
+      <td>{{ acc.created_at or '—' }}</td>
+
+      <td>
+        {% set member_ids = acc.members.split(',') if acc.members else [] %}
+        {% for uid in member_ids %}
+          {% set is_self = uid|int == session['user_id'] %}
+          {% set is_last_admin = admin_count == 1 and acc.has_admin %}
+          
+          <div class="mb-2 p-2 border rounded bg-light-subtle">
+            <form method="post" action="/toggle_admin/{{ uid }}" style="display:inline;">
+             <button class="btn btn-sm {{ 'btn-warning' if not acc.has_admin else 'btn-secondary' }}"
+                      {% if is_self %}disabled data-bs-toggle="tooltip" title="לא ניתן לשנות הרשאות לעצמך"{% elif is_last_admin and acc.has_admin %}disabled data-bs-toggle="tooltip" title="לא ניתן להסיר את המנהל האחרון"{% endif %}>
+              {% if acc.has_admin %}
+                הסר ניהול
+              {% else %}
+                הפוך למנהל
+              {% endif %}
+             </button>
+            </form>
+
+
+            <!-- מחק משתמש -->
+            <form method="post" action="/delete_user/{{ uid }}" style="display:inline;">
+              <button class="btn btn-sm btn-danger"
+                      {% if is_self %}disabled data-bs-toggle="tooltip" title="לא ניתן למחוק את עצמך"{% elif is_last_admin %}disabled data-bs-toggle="tooltip" title="לא ניתן למחוק את המנהל האחרון"{% endif %}>
+                מחק משתמש
+              </button>
+            </form>
+
+            {% if is_self %}
+              <small class="text-muted d-block mt-1">
+                <i class="bi bi-lock-fill text-secondary"></i> לא ניתן להסיר או למחוק את עצמך
+              </small>
+            {% elif is_last_admin %}
+              <small class="text-muted d-block mt-1">
+                <i class="bi bi-exclamation-triangle text-warning"></i> לא ניתן להסיר את המנהל האחרון
+              </small>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<!-- הפעלת tooltip של Bootstrap -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+  tooltipTriggerList.forEach(el => new bootstrap.Tooltip(el));
+});
+</script>
+
+{% endblock %}

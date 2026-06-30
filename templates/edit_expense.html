@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3 class="mb-4 text-center">עריכת הוצאה</h3>
+
+<form method="post" class="w-50 mx-auto">
+  <div class="mb-3">
+    <label class="form-label">סכום</label>
+    <input type="number" name="amount" class="form-control" value="{{ expense['amount'] }}" required>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">תיאור</label>
+    <input type="text" name="description" class="form-control" value="{{ expense['description'] }}">
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">תאריך</label>
+    <input type="date" name="date" class="form-control" value="{{ expense['date'] }}" required>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">קטגוריה</label>
+    <select name="category" class="form-select" required>
+      {% for t in expense_types %}
+        <option value="{{ t['id'] }}" {% if expense['type_id'] == t['id'] %}selected{% endif %}>{{ t['name'] }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <!-- ✅ שדה חדש: סוג הוצאה -->
+  <div class="mb-3">
+    <label class="form-label">סוג הוצאה</label>
+    <select name="expense_type" class="form-select" required>
+      <option value="משתנה" {% if expense['expense_type'] == 'משתנה' %}selected{% endif %}>משתנה</option>
+      <option value="קבועה" {% if expense['expense_type'] == 'קבועה' %}selected{% endif %}>קבועה</option>
+    </select>
+  </div>
+
+  <div class="d-flex justify-content-between">
+    <a href="/" class="btn btn-secondary">ביטול</a>
+    <button class="btn btn-success">שמור שינויים</button>
+  </div>
+</form>
+
+{% endblock %}

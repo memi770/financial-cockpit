@@ -1,0 +1,412 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3 class="mb-4 text-center">
+  לוח בקרה פיננסי 
+  {% if shared_id %}
+    <small class="text-muted">(חשבון משותף)</small>
+  {% endif %}
+</h3>
+
+
+<!-- ================= ADD TRANSACTION ================= -->
+
+<div class="card p-3 shadow-sm mb-4">
+  <form method="post"
+        id="transactionForm"
+        action="{{ url_for('expenses.add_expense') }}"
+        class="row g-2 align-items-end">
+
+    <!-- סוג עסקה -->
+    <div class="col-auto">
+      <select id="transactionSelector" class="form-select">
+        <option value="expense" selected>הוצאה</option>
+        <option value="income">הכנסה</option>
+      </select>
+    </div>
+
+    <!-- סכום -->
+    <div class="col-auto">
+      <input type="number" step="0.01" name="amount"
+             class="form-control" placeholder="סכום" required>
+    </div>
+
+    <!-- תיאור -->
+    <div class="col-auto">
+      <input type="text" name="description"
+             class="form-control" placeholder="תיאור">
+    </div>
+
+    <!-- תאריך -->
+    <div class="col-auto">
+      <input type="date" name="date"
+             class="form-control" required>
+    </div>
+
+    <!-- ========= EXPENSE FIELDS ========= -->
+    <div id="expenseFields" class="col-auto">
+      <div class="d-flex gap-2">
+
+
+        <div class="d-flex align-items-center gap-1">
+          <select name="category" 
+                  class="form-select form-select-sm"
+                  style="min-width: 160px;">
+            <option value="" disabled selected hidden>קטגוריה</option>
+            {% for t in expense_types %}
+              <option value="{{ t.id }}">{{ t.name }}</option>
+            {% endfor %}
+          </select>
+          <button type="button"
+                  class="btn btn-outline-success btn-sm px-2"
+                  style="height: 31px;"
+                  data-bs-toggle="modal"
+                  data-bs-target="#addExpenseTypeModal">+</button>
+        </div>
+
+        <select name="expense_type" class="form-select">
+          <option value="" disabled selected hidden>סוג הוצאה</option>
+          <option value="קבועה">קבועה</option>
+          <option value="משתנה">משתנה</option>
+        </select>
+
+      </div>
+    </div>
+
+    <!-- ========= INCOME FIELDS ========= -->
+    <div id="incomeFields" class="col-auto d-none">
+      <div class="d-flex gap-2">
+
+        <div class="d-flex align-items-center gap-1">
+          <select name="type_id"
+                  class="form-select form-select-sm"
+                  style="min-width: 160px;">
+            <option value="" disabled selected hidden>קטגוריה</option>
+            {% for t in income_types %}
+              <option value="{{ t.id }}">{{ t.name }}</option>
+            {% endfor %}
+          </select>
+
+          <button type="button"
+                  class="btn btn-outline-success btn-sm px-2"
+                  style="height: 31px;"
+                  data-bs-toggle="modal"
+                  data-bs-target="#addIncomeTypeModal">
+            +
+          </button>
+        </div>
+
+
+        <select name="income_type" class="form-select">
+          <option value="" disabled selected hidden>סוג הכנסה</option>
+          <option value="קבועה">קבועה</option>
+          <option value="משתנה">משתנה</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- כפתור -->
+    <div class="col-auto">
+      <button class="btn btn-success">הוסף</button>
+    </div>
+
+  </form>
+</div>
+
+
+<!-- ================= FILTERS ================= -->
+
+<div class="card p-3 shadow-sm mb-4">
+  <form method="GET" class="row g-2">
+
+    <div class="col-auto">
+      <select name="transaction_type" class="form-select">
+        <option value="">הכל</option>
+        <option value="expense" {% if filters.transaction_type == "expense" %}selected{% endif %}>הוצאות</option>
+        <option value="income" {% if filters.transaction_type == "income" %}selected{% endif %}>הכנסות</option>
+      </select>
+    </div>
+
+    <div class="col-auto">
+      <input type="date" name="start_date"
+             value="{{ filters.start_date }}"
+             class="form-control">
+    </div>
+
+    <div class="col-auto">
+      <input type="date" name="end_date"
+             value="{{ filters.end_date }}"
+             class="form-control">
+    </div>
+
+    <div class="col-auto">
+      <select name="category_id" class="form-select">
+        <option value="">כל הקטגוריות</option>
+
+        {% for c in expense_types %}
+          <option value="{{ c.id }}"
+            {% if filters.category_id == c.id|string %}selected{% endif %}>
+            {{ c.name }}
+          </option>
+        {% endfor %}
+
+        {% for c in income_types %}
+          <option value="{{ c.id }}"
+            {% if filters.category_id == c.id|string %}selected{% endif %}>
+            {{ c.name }} (הכנסה)
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="col-auto">
+      <select name="nature" class="form-select">
+        <option value="">כל הסוגים</option>
+        <option value="קבועה"
+          {% if filters.nature == "קבועה" %}selected{% endif %}>
+          קבועה
+        </option>
+
+        <option value="משתנה"
+          {% if filters.nature == "משתנה" %}selected{% endif %}>
+          משתנה
+        </option>
+      </select>
+    </div>
+
+    <div class="col-auto">
+      <select name="created_by" class="form-select">
+        <option value="">כל המשתמשים</option>
+        {% for u in users %}
+          <option value="{{ u.user_id }}"
+            {% if filters.created_by == u.user_id|string %}selected{% endif %}>
+            {{ u.username }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="col-auto">
+      <button class="btn btn-primary">סנן</button>
+    </div>
+
+    <div class="col-auto">
+      <a href="/" class="btn btn-outline-secondary">איפוס</a>
+    </div>
+
+  </form>
+</div>
+
+<!-- ================= TABLE ================= -->
+
+<table class="table table-striped table-bordered text-center align-middle">
+  <thead class="table-dark">
+    <tr>
+      <th>תאריך</th>
+      <th>קטגוריה</th>
+      <th>תיאור</th>
+      <th>סכום</th>
+      <th>סוג</th>
+      <th>אופי</th>
+      {% if shared_id %}<th>הוזן על ידי</th>{% endif %}
+      <th>פעולות</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for t in transactions %}
+    <tr>
+      <td>{{ t.date[:10] }}</td>
+      <td>{{ t.category }}</td>
+      <td>{{ t.description }}</td>
+
+      <td>
+        <strong class="{% if t.type == 'expense' %}text-danger{% else %}text-success{% endif %}">
+          {{ t.amount }} ₪
+        </strong>
+      </td>
+
+      <td>
+        {% if t.transaction_type == "expense" %}
+          <span class="badge bg-danger">הוצאה</span>
+        {% else %}
+          <span class="badge bg-success">הכנסה</span>
+        {% endif %}
+      </td>
+
+      <td>
+        {% if t.nature == "קבועה" %}
+          <span class="badge bg-primary">קבועה</span>
+        {% else %}
+          <span class="badge bg-info text-dark">משתנה</span>
+        {% endif %}
+      </td>
+
+      {% if shared_id %}
+      <td>
+        {% if t.created_by == username %}
+          <span class="badge bg-primary">אני</span>
+        {% else %}
+          <span class="badge bg-secondary">{{ t.created_by }}</span>
+        {% endif %}
+      </td>
+      {% endif %}
+
+      <td>
+
+        {% if t.transaction_type == "expense" %}
+
+          <a href="{{ url_for('expenses.edit_expense', expense_id=t.id) }}"
+            class="btn btn-sm btn-warning">
+            ערוך
+          </a>
+
+          <form method="post"
+                action="{{ url_for('expenses.delete_expense', expense_id=t.id) }}"
+                style="display:inline;"
+                onsubmit="return confirm('למחוק?');">
+            <button class="btn btn-sm btn-danger">מחק</button>
+          </form>
+
+        {% else %}
+
+          <a href="{{ url_for('incomes.edit_income', income_id=t.id) }}"
+            class="btn btn-sm btn-warning">
+            ערוך
+          </a>
+
+          <form method="post"
+                action="{{ url_for('incomes.delete_income', income_id=t.id) }}"
+                style="display:inline;"
+                onsubmit="return confirm('למחוק?');">
+            <button class="btn btn-sm btn-danger">מחק</button>
+          </form>
+
+        {% endif %}
+
+      </td>
+
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+<!-- 💰 SUMMARY CARDS -->
+<div class="row text-center mb-4 g-3">
+
+  <!-- הוצאות -->
+  <div class="col-md-4 d-flex">
+    <div class="card shadow-sm p-3 w-100">
+      <h6 class="text-muted">סה״כ הוצאות</h6>
+      <h4 class="text-danger">{{ "%.2f"|format(total_amount) }} ₪</h4>
+      <small>{{ total_count }} רשומות</small>
+    </div>
+  </div>
+
+  <!-- הכנסות -->
+  <div class="col-md-4 d-flex">
+    <div class="card shadow-sm p-3 w-100">
+      <h6 class="text-muted">סה״כ הכנסות</h6>
+      <h4 class="text-success">{{ "%.2f"|format(total_income) }} ₪</h4>
+      <small>{{ income_count }} רשומות</small>
+    </div>
+  </div>
+
+  <!-- מאזן -->
+  <div class="col-md-4 d-flex">
+    <div class="card shadow-sm p-3 w-100">
+      <h6 class="text-muted">מאזן</h6>
+      <h4 class="{{ balance_color }}">
+        <i class="bi {{ balance_icon }}"></i>
+        {{ "%.2f"|format(balance) }} ₪
+      </h4>
+
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ================= MODALS ================= -->
+
+<!-- Expense Category -->
+<div class="modal fade" id="addExpenseTypeModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="post" action="{{ url_for('expenses.add_type') }}">
+        <div class="modal-header">
+          <h5 class="modal-title">הוסף קטגוריית הוצאה</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <input type="text" name="name"
+                 class="form-control"
+                 placeholder="שם קטגוריה"
+                 required>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">הוסף</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Income Category -->
+<div class="modal fade" id="addIncomeTypeModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="post" action="{{ url_for('incomes.add_type') }}">
+        <div class="modal-header">
+          <h5 class="modal-title">הוסף קטגוריית הכנסה</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <input type="text" name="name"
+                 class="form-control"
+                 placeholder="שם קטגוריה"
+                 required>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">הוסף</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- ================= SWITCH SCRIPT ================= -->
+
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+
+  const selector = document.getElementById("transactionSelector");
+  const form = document.getElementById("transactionForm");
+  const expenseFields = document.getElementById("expenseFields");
+  const incomeFields = document.getElementById("incomeFields");
+
+  selector.addEventListener("change", function(){
+
+    if(this.value === "income"){
+      form.action = "{{ url_for('incomes.add_income') }}";
+      expenseFields.classList.add("d-none");
+      incomeFields.classList.remove("d-none");
+    } else {
+      form.action = "{{ url_for('expenses.add_expense') }}";
+      expenseFields.classList.remove("d-none");
+      incomeFields.classList.add("d-none");
+    }
+
+  });
+
+});
+</script>
+
+{% endblock %}
+
+
+
+

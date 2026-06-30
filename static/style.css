@@ -1,0 +1,313 @@
+/* =======================
+   General Styles
+======================= */
+body {
+    font-family: "Rubik", "Heebo", Arial, sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    direction: rtl;
+}
+
+h1, h2, h3, h4 {
+    text-align: center;
+    color: #222;
+    margin-bottom: 16px;
+}
+
+/* =======================
+   Navbar
+======================= */
+.navbar {
+    background-color: #007bff !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.navbar .nav-link {
+    color: white !important;
+    font-weight: bold;
+}
+
+.navbar .nav-link:hover {
+    color: #dbe9ff !important;
+}
+
+/* =======================
+   Buttons
+======================= */
+button, .btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+button:hover, .btn:hover {
+    background-color: #0056b3;
+    transform: scale(1.03);
+    opacity: 0.9;
+}
+
+/* צבעים ייחודיים לפי סוג פעולה */
+.btn-warning {
+    background-color: #ffc107 !important;
+    color: #000;
+}
+
+.btn-danger {
+    background-color: #dc3545 !important;
+}
+
+.btn-secondary {
+    background-color: #6c757d !important;
+}
+
+/* =======================
+   Forms
+======================= */
+input, select {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    transition: border-color 0.2s ease;
+}
+
+input:focus, select:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* =======================
+   Tables
+======================= */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.table th, .table td {
+    padding: 12px 16px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.table th {
+    background: linear-gradient(90deg, #343a40, #495057);
+    color: white;
+    font-size: 1.05rem;
+}
+
+.table tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+.table tbody tr:hover {
+    background-color: rgba(0,123,255,0.05);
+}
+
+/* =======================
+   Cards (Dashboard / Admin)
+======================= */
+.card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 24px;
+    margin-bottom: 20px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: none;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+
+.card h2 {
+    font-size: 2rem;
+    margin: 0;
+    font-weight: bold;
+}
+
+/* צבעים ייחודיים ללוח ניהול */
+.card.bg-light {
+    background: linear-gradient(135deg, #f1f6ff, #eafaf0);
+}
+
+/* =======================
+   Dashboard Background
+======================= */
+body.dashboard {
+    background: linear-gradient(135deg, #f0f4ff, #dfffe7);
+    min-height: 100vh;
+}
+
+/* =======================
+   Login & Register Pages
+======================= */
+body.login-page,
+body.register {
+    background: linear-gradient(135deg, #d7e1fa, #e8fff3);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 400px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    padding: 30px;
+}
+
+.login-container h2 {
+    font-weight: bold;
+    margin-bottom: 24px;
+}
+
+/* =======================
+   Modal (Add Category)
+======================= */
+.modal-content input {
+    text-align: right;
+}
+
+/* =======================
+   Charts
+======================= */
+.chart-container {
+    width: 100%;
+    max-width: 500px;
+    height: 400px;
+    margin: auto;
+}
+
+#expenseChart {
+    width: 100% !important;
+    height: 100% !important;
+    background: #fff;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0px 3px 8px rgba(0,0,0,0.1);
+}
+
+/* =======================
+   Month Selector
+======================= */
+#monthSelect {
+    margin: 0 auto 20px auto;
+    display: block;
+    font-size: 1rem;
+    padding: 6px 12px;
+    width: 220px;
+    text-align: center;
+    border-radius: 8px;
+    border: 1px solid #007bff;
+    background-color: #fff;
+    font-weight: bold;
+    color: #333;
+    box-shadow: 0px 2px 6px rgba(0,0,0,0.1);
+}
+
+#monthSelect:focus {
+    outline: none;
+    border-color: #0056b3;
+}
+
+/* =======================
+   Fade & Hover Animations
+======================= */
+.fade-in {
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+canvas {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+canvas:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* =======================
+   Responsive
+======================= */
+@media (max-width: 768px) {
+    .card h2 { font-size: 1.4rem; }
+    .table { font-size: 0.9rem; }
+}
+
+/* ✅ שיפור תצוגת dropdown */
+.dropdown-menu {
+  border-radius: 10px;
+  font-size: 0.95rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.dropdown-item:hover {
+  background-color: #e9f7ef;
+  transform: scale(1.02);
+}
+
+/* ✅ אנימציה נעימה */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.dropdown-menu.show {
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+/* ✅ עיצוב לכפתור הייצוא */
+.export-btn {
+  transition: all 0.25s ease;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+}
+
+.export-btn:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 6px 10px rgba(0,0,0,0.25);
+  background-color: #198754 !important; /* ירוק עמוק יותר בעת ריחוף */
+}
+
+/* ✅ תפריט Dropdown */
+.dropdown-menu {
+  border-radius: 10px;
+  font-size: 0.95rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.dropdown-item:hover {
+  background-color: #e8f8ef !important;
+  transform: translateX(-3px);
+}
+
+.dropdown-item i {
+  margin-left: 6px;
+}
+
+.dropdown-header {
+  background: #f8f9fa;
+  border-radius: 6px;
+  margin-top: 3px;
+}

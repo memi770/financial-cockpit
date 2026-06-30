@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-4 fade-in" style="max-width: 700px;">
+  <div class="card shadow p-4">
+
+    <h3 class="text-center mb-4"><i class="bi bi-person-gear"></i> הגדרות חשבון</h3>
+
+    <!-- ✅ Toast הודעות -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div id="flash-container" class="position-fixed top-0 end-0 p-3" style="z-index: 1100;">
+          {% for category, message in messages %}
+            <div class="toast align-items-center text-bg-{{ 'danger' if category == 'error' else category }} border-0 show mb-2">
+              <div class="d-flex">
+                <div class="toast-body">
+                  {{ message }}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="/profile">
+
+      <!-- פרטים אישיים -->
+      <div class="mb-3">
+        <label class="form-label">שם משתמש</label>
+        <input type="text" class="form-control" name="username" value="{{ user['username'] }}" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">אימייל</label>
+        <input type="email" class="form-control" name="email" value="{{ user['email'] }}" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">שינוי סיסמה (אופציונלי)</label>
+        <input type="password" class="form-control" name="new_password" placeholder="הזן סיסמה חדשה">
+      </div>
+
+      <hr>
+
+      <!-- חשבון משותף -->
+      <div class="shared-account-section mt-3">
+        <h5><i class="bi bi-people-fill"></i> חשבון משותף</h5>
+
+        {% if user['shared_account_id'] %}
+          <p class="mt-2">
+            אתה חלק מחשבון משותף בשם:  
+            <strong>{{ shared_name or "לא זמין" }}</strong><br>
+            <strong>שותפים:</strong>
+            {% for partner in partners %}
+              {{ partner['username'] }}{% if not loop.last %}, {% endif %}
+            {% endfor %}
+          </p>
+
+          <button type="submit" name="action" value="leave_shared" class="btn btn-danger w-100 mt-2">
+            <i class="bi bi-x-circle"></i> התנתק מהחשבון המשותף
+          </button>
+
+        {% else %}
+          <p class="text-muted small mt-2">
+            כרגע זהו חשבון אישי. ניתן להפוך אותו למשותף ע״י הוספת שותף חדש או קיים.
+          </p>
+
+          <!-- צור שותף חדש -->
+          <div class="card p-3 mt-3">
+            <h6 class="text-success text-center mb-2">
+              <i class="bi bi-person-plus-fill"></i> צור שותף חדש
+            </h6>
+
+            <input type="text" name="partner_username" class="form-control mb-2" placeholder="שם משתמש חדש">
+            <input type="email" name="partner_email" class="form-control mb-2" placeholder="אימייל השותף">
+            <input type="password" name="partner_password" class="form-control mb-2" placeholder="סיסמה לשותף">
+            <input type="text" name="shared_name" class="form-control mb-2" placeholder="שם לחשבון המשותף">
+
+            <button type="submit" name="action" value="add_new_partner" class="btn btn-success w-100">
+              <i class="bi bi-plus-circle"></i> צור חשבון משותף
+            </button>
+          </div>
+
+          <!-- חבר משתמש קיים -->
+          <div class="card p-3 mt-3 border-primary">
+            <h6 class="text-primary text-center mb-2">
+              <i class="bi bi-link-45deg"></i> חבר משתמש קיים
+            </h6>
+
+            <input type="text" name="partner_username" class="form-control mb-2" placeholder="שם משתמש קיים">
+            <input type="password" name="partner_password" class="form-control mb-2" placeholder="סיסמת השותף">
+
+            <button type="submit" name="action" value="merge_existing_partner" class="btn btn-primary w-100">
+              <i class="bi bi-arrow-repeat"></i> חבר לחשבון משותף
+            </button>
+          </div>
+        {% endif %}
+      </div>
+
+      <hr>
+
+      <button type="submit" name="action" value="update_profile" class="btn btn-success w-100 mt-3">
+        <i class="bi bi-save"></i> שמור שינויים
+      </button>
+
+      <a href="/" class="btn btn-outline-secondary w-100 mt-2">
+        <i class="bi bi-arrow-left-circle"></i> חזרה ללוח ההוצאות
+      </a>
+    </form>
+  </div>
+</div>
+
+{% endblock %}
