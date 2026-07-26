@@ -37,10 +37,23 @@ def index():
         balance_color = "text-secondary"
         balance_icon = "bi-dash-circle-fill"
 
-    # Static data (לא עסקי)
-    users = db.execute("SELECT user_id, username FROM users").fetchall()
-    expense_types = db.execute("SELECT * FROM expense_types ORDER BY id").fetchall()
-    income_types = db.execute("SELECT * FROM income_types ORDER BY name").fetchall()
+    # Static data
+    users = db.execute("SELECT user_id, username FROM users WHERE is_admin = 0").fetchall()
+    expense_types = db.execute("""
+        SELECT *
+        FROM expense_types
+        ORDER BY
+            CASE WHEN name='אחר' THEN 1 ELSE 0 END,
+            name
+    """).fetchall()
+
+    income_types = db.execute("""
+        SELECT *
+        FROM income_types
+        ORDER BY
+            CASE WHEN name='אחר' THEN 1 ELSE 0 END,
+            name
+    """).fetchall()
 
     shared_users = []
     if shared_id:

@@ -31,9 +31,9 @@
   <!-- ✅ שדה חדש: סוג הוצאה -->
   <div class="mb-3">
     <label class="form-label">סוג הוצאה</label>
-    <select name="expense_type" class="form-select" required>
-      <option value="משתנה" {% if expense['expense_type'] == 'משתנה' %}selected{% endif %}>משתנה</option>
-      <option value="קבועה" {% if expense['expense_type'] == 'קבועה' %}selected{% endif %}>קבועה</option>
+    <select name="nature" class="form-select" required>
+      <option value="משתנה" {% if expense['nature'] == 'משתנה' %}selected{% endif %}>משתנה</option>
+      <option value="קבועה" {% if expense['nature'] == 'קבועה' %}selected{% endif %}>קבועה</option>
     </select>
   </div>
 
@@ -44,3 +44,5 @@
 </form>
 
 {% endblock %}
+
+

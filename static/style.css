@@ -119,14 +119,14 @@ input:focus, select:focus {
 /* =======================
    Cards (Dashboard / Admin)
 ======================= */
-.card {
-    background: white;
-    border-radius: 16px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    padding: 24px;
-    margin-bottom: 20px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    border: none;
+.card{
+    background:white;
+    border:none;
+    border-radius:18px;
+    padding:24px;
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+    margin-bottom:20px;
+    transition:transform .2s ease, box-shadow .2s ease;
 }
 
 .card:hover {
@@ -257,7 +257,6 @@ canvas:hover {
     .table { font-size: 0.9rem; }
 }
 
-/* ✅ שיפור תצוגת dropdown */
 .dropdown-menu {
   border-radius: 10px;
   font-size: 0.95rem;
@@ -269,7 +268,6 @@ canvas:hover {
   transform: scale(1.02);
 }
 
-/* ✅ אנימציה נעימה */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-5px); }
   to { opacity: 1; transform: translateY(0); }
@@ -278,7 +276,6 @@ canvas:hover {
   animation: fadeIn 0.2s ease-in-out;
 }
 
-/* ✅ עיצוב לכפתור הייצוא */
 .export-btn {
   transition: all 0.25s ease;
   box-shadow: 0 3px 6px rgba(0,0,0,0.15);
@@ -287,10 +284,8 @@ canvas:hover {
 .export-btn:hover {
   transform: translateY(-2px) scale(1.03);
   box-shadow: 0 6px 10px rgba(0,0,0,0.25);
-  background-color: #198754 !important; /* ירוק עמוק יותר בעת ריחוף */
+  background-color: #198754 !important;
 }
-
-/* ✅ תפריט Dropdown */
 .dropdown-menu {
   border-radius: 10px;
   font-size: 0.95rem;
@@ -310,4 +305,141 @@ canvas:hover {
   background: #f8f9fa;
   border-radius: 6px;
   margin-top: 3px;
+}
+
+/* =======================
+   Dashboard Alignment
+======================= */
+
+.form-control,
+.form-select {
+    height: 38px;
+}
+
+.btn-align {
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.form-section-title {
+    text-align: center;
+    font-weight: 700;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+.category-input{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.category-input select{
+    flex:1;
+}
+
+.category-input .btn-plus{
+    width:42px;
+    height:42px;
+    padding:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:20px;
+}
+
+.fields-inline{
+    display:flex;
+    gap:18px;
+    align-items:flex-end;
+}
+
+.form-field{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    width:170px;
+}
+
+.field-label{
+    font-size:13px;
+    font-weight:600;
+    color:#555;
+    text-align:center;
+    margin-bottom:2px;
+}
+
+.form-label,
+.field-label{
+    display:block;
+    width:100%;
+    text-align:center;
+    font-size:13px;
+    font-weight:600;
+    color:#555;
+    margin-bottom:4px;
+}
+
+.form-field .form-control,
+.form-field .form-select{
+    height:42px;
+}
+
+.button-field{
+    justify-content:flex-end;
+}
+
+.button-field .btn{
+    height:42px;
+    min-width:90px;
+}
+
+.form-section-title{
+
+    text-align:center;
+
+    font-size:20px;
+
+    font-weight:700;
+
+    margin-bottom:22px;
+
+    position:relative;
+
+}
+
+.form-section-title::after{
+
+    content:"";
+
+    display:block;
+
+    width:70px;
+
+    height:3px;
+
+    background:#0d6efd;
+
+    margin:8px auto 0;
+
+    border-radius:3px;
+
+}
+
+.form-actions{
+    width:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:12px;
+    margin-top:20px;
+}
+
+.form-actions .btn{
+    min-width:160px;
+    height:42px;
 }

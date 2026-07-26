@@ -1,10 +1,7 @@
 
 
 def resolve_scope(user_id, shared_id, table_alias=None):
-    """
-    מחזיר תנאי WHERE ופרמטרים לפי scope.
-    תומך גם ב-alias (למשל e.user_id)
-    """
+    
 
     prefix = f"{table_alias}." if table_alias else ""
 

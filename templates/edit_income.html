@@ -48,11 +48,11 @@
     <label class="form-label">סוג הכנסה</label>
     <select name="income_nature" class="form-select">
       <option value="משתנה"
-        {% if income['income_type'] == 'משתנה' %}selected{% endif %}>
+        {% if income['nature'] == 'משתנה' %}selected{% endif %}>
         משתנה
       </option>
       <option value="קבועה"
-        {% if income['income_type'] == 'קבועה' %}selected{% endif %}>
+        {% if income['nature'] == 'קבועה' %}selected{% endif %}>
         קבועה
       </option>
     </select>
@@ -66,3 +66,6 @@
 </form>
 
 {% endblock %}
+
+
+

@@ -11,7 +11,8 @@ def get_expense_by_scope(expense_id, user_id, shared_id):
     condition, params = resolve_scope(user_id, shared_id)
 
     query = f"""
-        SELECT *
+        SELECT *,
+            expense_nature AS nature
         FROM expenses
         WHERE id=? AND {condition}
     """

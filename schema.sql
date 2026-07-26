@@ -41,15 +41,6 @@ CREATE TABLE IF NOT EXISTS expense_types (
         ON DELETE CASCADE
 );
 
--- =====================
--- Default Expense Categories (System)
--- =====================
-INSERT OR IGNORE INTO expense_types (name, color, created_by) VALUES
-('מזון', '#FF6384', NULL),
-('תחבורה', '#36A2EB', NULL),
-('דיור', '#FFCE56', NULL),
-('בידור', '#4BC0C0', NULL),
-('אחר', '#9966FF', NULL);
 
 -- =====================
 -- Income Categories
@@ -65,16 +56,7 @@ CREATE TABLE IF NOT EXISTS income_types (
         ON DELETE CASCADE
 );
 
--- =====================
--- Default Income Categories (System)
--- =====================
-INSERT OR IGNORE INTO income_types (name, color, created_by) VALUES
-('משכורת', '#4CAF50', NULL),
-('עסק', '#2196F3', NULL),
-('השקעות', '#9C27B0', NULL),
-('מתנה', '#FF9800', NULL),
-('קצבה', '#795548', NULL),
-('אחר', '#9966FF', NULL);
+
 
 -- =====================
 -- Expenses

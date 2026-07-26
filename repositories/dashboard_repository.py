@@ -4,11 +4,15 @@ from utils.scope import resolve_scope
 
 def get_transactions(user_id, shared_id, filters):
     db = get_db()
-    condition, params = resolve_scope(user_id, shared_id)
+    condition, params = resolve_scope(user_id, shared_id,"combined_transactions_view")
 
     query = f"""
-        SELECT *
+        SELECT
+            combined_transactions_view.*,
+            users.username AS created_by_name
         FROM combined_transactions_view
+        LEFT JOIN users
+            ON users.user_id = combined_transactions_view.created_by
         WHERE {condition}
     """
 
@@ -30,6 +34,11 @@ def get_transactions(user_id, shared_id, filters):
     if filters.get("created_by"):
         query += " AND created_by = ?"
         params += (filters["created_by"],)
+        
+    # קבועה / משתנה
+    if filters.get("nature"):
+        query += " AND nature = ?"
+        params += (filters["nature"],)    
 
     query += " ORDER BY date DESC"
 
@@ -38,7 +47,7 @@ def get_transactions(user_id, shared_id, filters):
 
 def get_totals(user_id, shared_id, filters):
     db = get_db()
-    condition, params = resolve_scope(user_id, shared_id)
+    condition, params = resolve_scope(user_id, shared_id,"combined_transactions_view")
 
     query = f"""
         SELECT transaction_type,
@@ -55,6 +64,10 @@ def get_totals(user_id, shared_id, filters):
     if filters.get("end_date"):
         query += " AND date <= ?"
         params += (filters["end_date"],)
+        
+    if filters.get("nature"):
+        query += " AND nature = ?"
+        params += (filters["nature"],)    
 
     query += " GROUP BY transaction_type"
 
@@ -84,7 +97,7 @@ def get_totals(user_id, shared_id, filters):
 
 def get_monthly_cashflow(user_id, shared_id):
     db = get_db()
-    condition, params = resolve_scope(user_id, shared_id)
+    condition, params = resolve_scope(user_id, shared_id,"combined_transactions_view")
 
     query = f"""
         SELECT substr(date,1,7) as month,

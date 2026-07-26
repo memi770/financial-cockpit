@@ -28,7 +28,8 @@ def get_income_by_id(income_id, user_id, shared_id):
     condition, params = resolve_scope(user_id, shared_id)
 
     query = f"""
-        SELECT *
+        SELECT *,
+            income_nature AS nature
         FROM incomes
         WHERE id=? AND {condition}
     """

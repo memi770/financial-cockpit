@@ -12,12 +12,21 @@ def charts():
     db = get_db()
     user_id = session["user_id"]
     shared_id = get_account_scope(db, user_id)
+    users = []
 
     if shared_id:
         transactions = db.execute("""
             SELECT * FROM combined_transactions_view
             WHERE shared_account_id=?
         """, (shared_id,)).fetchall()
+        
+        users = db.execute("""
+            SELECT user_id, username
+            FROM users
+            WHERE shared_account_id = ?
+            ORDER BY username
+        """, (shared_id,)).fetchall()
+        print([dict(u) for u in users])
     else:
         transactions = db.execute("""
             SELECT * FROM combined_transactions_view
@@ -28,7 +37,8 @@ def charts():
     return render_template(
         "charts.html",
         transactions=transactions,
-        shared_id=shared_id
+        shared_id=shared_id,
+        users=users
     )
 
 # ===============================
@@ -47,6 +57,7 @@ def get_chart_data():
     transaction_type = request.args.get("type") 
     print("TYPE FROM FRONT:", transaction_type)    
     nature = request.args.get("nature")
+    created_by = request.args.get("created_by")
 
 
     query = """
@@ -79,7 +90,11 @@ def get_chart_data():
 
     if nature:
         query += " AND nature=?"
-        params.append(nature)   
+        params.append(nature)  
+        
+    if created_by:
+        query += " AND created_by=?"
+        params.append(created_by)     
 
     # DEBUG DB VALUES
     debug_rows = db.execute(
