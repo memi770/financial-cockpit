@@ -228,6 +228,5 @@ Possible future enhancements:
 * Unit testing
 * CI/CD pipeline
 
-```
-```
+
 Developed as the final project for the Practical Software Engineering diploma.
