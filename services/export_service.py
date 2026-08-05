@@ -5,17 +5,12 @@ from flask import make_response
 
 from db import get_db
 from repositories.transaction_repository import get_transactions
-from utils.scope import resolve_scope
 
-from repositories.transaction_repository import get_transactions
-from utils.scope import resolve_scope
 
 def export_csv_service(request, user_id):
 
     db = get_db()
-    cursor = db.cursor()
 
-    # קבלת shared_id כמו בדשבורד
     row = db.execute(
         "SELECT shared_account_id FROM users WHERE user_id=?",
         (user_id,)
@@ -65,11 +60,14 @@ def export_excel_service(request, user_id):
     ).fetchone()
 
     shared_id = row["shared_account_id"] if row else None
-
+    
     transactions = get_transactions(user_id, shared_id)
 
-    df = pd.DataFrame(transactions)
+    transactions = [dict(row) for row in transactions]
+    
 
+    df = pd.DataFrame(transactions)
+        
     output = io.BytesIO()
 
     with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
@@ -95,14 +93,14 @@ def export_excel_service(request, user_id):
             'align': 'center'
         })
 
-        for row_num, row in enumerate(df.itertuples(index=False), start=1):
-            worksheet.write(row_num, 0, row.date)
-            worksheet.write(row_num, 1, row.category)
-            worksheet.write(row_num, 2, row.description)
-            worksheet.write(row_num, 3, row.amount, money_format)
-            worksheet.write(row_num, 4, row.created_by)
-            worksheet.write(row_num, 5, row.transaction_type)
-            worksheet.write(row_num, 6, row.nature)
+        for row_num, row in enumerate(df.to_dict("records"), start=1):
+            worksheet.write(row_num, 0, row["date"])
+            worksheet.write(row_num, 1, row["category"])
+            worksheet.write(row_num, 2, row["description"])
+            worksheet.write(row_num, 3, row["amount"], money_format)
+            worksheet.write(row_num, 4, row["created_by"])
+            worksheet.write(row_num, 5, row["transaction_type"])
+            worksheet.write(row_num, 6, row["nature"])
 
     output.seek(0)
 

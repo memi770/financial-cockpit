@@ -55,7 +55,6 @@ def get_chart_data():
     start_date = request.args.get("start_date")
     end_date = request.args.get("end_date")
     transaction_type = request.args.get("type") 
-    print("TYPE FROM FRONT:", transaction_type)    
     nature = request.args.get("nature")
     created_by = request.args.get("created_by")
 
@@ -94,18 +93,10 @@ def get_chart_data():
         
     if created_by:
         query += " AND created_by=?"
-        params.append(created_by)     
-
-    # DEBUG DB VALUES
-    debug_rows = db.execute(
-        "SELECT DISTINCT transaction_type FROM combined_transactions_view"
-    ).fetchall()
-
-    print("DB VALUES:", [r["transaction_type"] for r in debug_rows])    
+        params.append(created_by)         
 
     rows = db.execute(query, params).fetchall()
     
-
     return jsonify([
         {
             "category": r["category"],
