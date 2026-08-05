@@ -1,15 +1,33 @@
 # Financial Cockpit
-![Python]
-![Flask]
-![SQLite]
-![Git]
+### Personal Finance Management Platform
 
 A full-stack personal finance management platform built with Python and Flask.
 
 Financial Cockpit enables users to manage income and expenses, monitor financial activity through interactive dashboards, generate reports, export financial data, and collaborate using shared accounts.
 
+```markdown
+## 🚀 Highlights
+
+- Full-stack web application
+- Modular Flask architecture
+- Authentication & authorization
+- Financial dashboards
+- Shared accounts
+- SQL database design
+
 ## 📷 Screenshots
 
+### Dashboard
+
+![Dashboard](images/dashboard.png)
+
+### Charts
+
+![Charts](images/charts.png)
+
+### Transactions
+
+![Transactions](images/transactions.png)
 
 
 ## ✨ Key Features
@@ -30,23 +48,19 @@ Financial Cockpit enables users to manage income and expenses, monitor financial
 
 The project is built using a layered architecture approach.
 
-Browser
-
-↓
-
-Routes
-
-↓
-
-Services
-
-↓
-
-Repositories
-
-↓
-
-SQLite
+     Browser
+        │
+        ▼
+   Flask Routes
+        │
+        ▼
+  Business Logic
+        │
+        ▼
+ Repository Layer
+        │
+        ▼
+  SQLite Database
 
 ### Routes Layer
 
@@ -156,7 +170,8 @@ Financial-Cockpit/
 ### Clone the repository
 
 ```bash
-git clone https://github.com/memi770/financial-cockpit.git```
+git clone https://github.com/memi770/financial-cockpit.git
+```
 
 ### Create virtual environment
 
