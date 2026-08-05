@@ -1,53 +1,52 @@
 # Financial Cockpit
+![Python]
+![Flask]
+![SQLite]
+![Git]
 
-## Overview
+A full-stack personal finance management platform built with Python and Flask.
 
-Financial Cockpit is a personal finance management web application developed as a final project for practical software engineering studies (Mahat).
+Financial Cockpit enables users to manage income and expenses, monitor financial activity through interactive dashboards, generate reports, export financial data, and collaborate using shared accounts.
 
-The system allows users to manage and analyze their personal finances by tracking income and expenses, viewing financial summaries, filtering transactions, and analyzing financial data through dashboards and charts.
+## 📷 Screenshots
 
-The application supports role-based access control with two types of users:
 
-* USER
-* ADMIN
 
----
+## ✨ Key Features
 
-## Features
-
-### User Management
-
-* User registration and authentication
-* Login and logout functionality
-* Role-based access control (USER / ADMIN)
-
-### Financial Management
-
-* Add, edit, and delete income records
-* Add, edit, and delete expense records
-* Manage financial transactions
-* Calculate current balance
-
-### Dashboard & Analysis
-
-* Financial dashboard with summaries
-* Income and expense analysis
-* Charts and visual reports
-* Transaction filtering and search capabilities
-
-### Export
-
-* Export financial data for external usage
-
-### Administration
-
-* Administrative functionality for managing system data
+- Secure authentication
+- Income & expense management
+- Shared accounts
+- Interactive dashboard
+- Financial charts
+- Reports
+- Advanced filtering
+- Excel & CSV export
+- Role-based access control
 
 ---
 
 ## Architecture
 
 The project is built using a layered architecture approach.
+
+Browser
+
+↓
+
+Routes
+
+↓
+
+Services
+
+↓
+
+Repositories
+
+↓
+
+SQLite
 
 ### Routes Layer
 
@@ -101,16 +100,33 @@ schema.sql
 
 ---
 
-## Technologies Used
+## 🛠 Tech Stack
 
-* Python
-* Flask
-* SQLite
-* Pandas
-* NumPy
-* Jinja2
-* HTML
-* CSS
+### Backend
+
+- Python
+- Flask
+
+### Database
+
+- SQLite
+- SQL
+
+### Frontend
+
+- HTML
+- CSS
+- Bootstrap
+- Jinja2
+
+### Data
+
+- Pandas
+- NumPy
+
+### Tools
+
+- Git
 
 ---
 
@@ -140,8 +156,7 @@ Financial-Cockpit/
 ### Clone the repository
 
 ```bash
-git clone <repository-url>
-```
+git clone https://github.com/memi770/financial-cockpit.git```
 
 ### Create virtual environment
 
@@ -183,13 +198,6 @@ http://127.0.0.1:5000
 
 ---
 
-## Project Purpose
-
-This project was developed as a final project for practical software engineering studies.
-
-The goal was to build a complete web application while implementing backend development principles, database management, user authentication, layered architecture, and financial data analysis.
-
----
 
 ## Future Improvements
 
@@ -200,6 +208,11 @@ Possible future enhancements:
 * Additional financial reports
 * Improved user interface
 * Automated testing
+* Docker support
+* REST API
+* Unit testing
+* CI/CD pipeline
 
 ```
 ```
+Developed as the final project for the Practical Software Engineering diploma.
