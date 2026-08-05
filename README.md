@@ -19,16 +19,21 @@ Financial Cockpit enables users to manage income and expenses, monitor financial
 
 ### Dashboard
 
+Manage income, expenses, financial summaries, and recent transactions from a single screen.
+
 ![Dashboard](images/dashboard.png)
 
 ### Charts
 
-![Charts](images/charts.png)
+Analyze expenses using interactive charts and filtering options.
 
-### Transactions
+![Charts](images/PieChart.png)
 
-![Transactions](images/transactions.png)
+### Administration Panel
 
+Manage users, roles, and shared accounts through the administration interface.
+
+![Admin](images/admin.png)
 
 ## ✨ Key Features
 
